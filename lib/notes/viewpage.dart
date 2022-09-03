@@ -13,6 +13,10 @@ class viewpage extends StatefulWidget {
 class _viewpageState extends State<viewpage> {
 
   List<Map> list=[];
+  List notes=[];
+  List titles=[];
+  List themes=[];
+  List ids=[];
   Database? database;
   Future<List> getNotes() async {
     database=await dbclass().createdb();
@@ -32,22 +36,43 @@ class _viewpageState extends State<viewpage> {
           {
             print("=>${snapshot.data}");
             List<Map> mylist=snapshot.data as List<Map>;
+            mylist.forEach((element) {
+              notes.add(element['notes']);
+              titles.add(element['title']);
+              themes.add(element['theme']);
+              ids.add(element['id']);
+            });
             return ListView.builder(itemBuilder: (context, index) {
-              Map m=mylist[index];
-              if(m['theme']=='blue')
+              if(themes[index]=='blue')
                 {
                   tile_color=Colors.blue;
                 }
+              if(themes[index]=='green')
+              {
+                tile_color=Colors.green;
+              }
+              if(themes[index]=='orange')
+              {
+                tile_color=Colors.orange;
+              }
+              if(themes[index]=='red')
+              {
+                tile_color=Colors.red;
+              }
+              if(themes[index]=='lightBlueAccent')
+              {
+                tile_color=Colors.lightBlueAccent;
+              }
               return ListTile(
                 tileColor: tile_color,
                 onTap: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return add_notes(m: m,method: "update",);
+                    return add_notes(title: titles[index],notes: notes[index],id: ids[index],theme:themes[index],method: "update",);
                   },));
                 },
-                title: Text("${m['title']}"),
-                subtitle: Text("${m['notes']}"),
-                leading: Text("${m['id']}"),
+                title: Text("${titles[index]}"),
+                subtitle: Text("${notes[index]}"),
+                leading: Text("${ids[index]}"),
               );
             },itemCount: mylist.length,);
           }

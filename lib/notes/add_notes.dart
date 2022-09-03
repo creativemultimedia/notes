@@ -4,9 +4,12 @@ import 'package:notes/notes/viewpage.dart';
 import 'package:sqflite/sqflite.dart';
 
 class add_notes extends StatefulWidget {
-  Map? m;
   String? method;
-  add_notes({this.m,this.method});
+  String? title;
+  String? notes;
+  int? id;
+  String? theme;
+  add_notes({this.title,this.notes,this.id,this.theme,this.method});
   @override
   State<add_notes> createState() => _add_notesState();
 }
@@ -26,8 +29,34 @@ class _add_notesState extends State<add_notes> {
   void initState() {
     if(widget.method=="update")
       {
-        t1.text=widget.m!['title'];
-        t2.text=widget.m!['notes'];
+        t1.text=widget.title!;
+        t2.text=widget.notes!;
+        if(widget.theme=='blue')
+        {
+          currentappbarcolor=Colors.blue;
+          currentbodycolor=Colors.blue.withOpacity(0.5);
+        }
+        if(widget.theme=='green')
+        {
+          currentappbarcolor=Colors.green;
+          currentbodycolor=Colors.green.withOpacity(0.5);
+        }
+        if(widget.theme=='orange')
+        {
+          currentappbarcolor=Colors.orange;
+          currentbodycolor=Colors.orange.withOpacity(0.5);
+        }
+        if(widget.theme=='red')
+        {
+          currentappbarcolor=Colors.red;
+          currentbodycolor=Colors.red.withOpacity(0.5);
+        }
+        if(widget.theme=='lightBlueAccent')
+        {
+          currentappbarcolor=Colors.lightBlueAccent;
+          currentbodycolor=Colors.lightBlueAccent.withOpacity(0.5);
+        }
+
       }
   }
 
