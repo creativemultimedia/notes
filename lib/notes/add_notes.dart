@@ -37,28 +37,47 @@ class _add_notesState extends State<add_notes> {
       }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: currentappbarcolor,
-        title: TextField(controller: t1,
+        title: TextField(
+
+          controller: t1,
           keyboardType: TextInputType.multiline,
           maxLines: null,),
         actions: [
           IconButton(onPressed: () async {
-            String name=t1.text;
-            String contact=t2.text;
-            String q="insert into notes values (null,'$name','$contact','$currenttheme')";
-            dbclass().createdb().then((value) async {
-              int id=await value.rawInsert(q);
-              if(id>=1)
+            String title=t1.text;
+            String notes=t2.text;
+            if(widget.method=="update")
               {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return viewpage();
-                },));
+                String q="update notes set title='$title',notes='$notes',theme='$currenttheme' where id=${widget.id}";
+                dbclass().createdb().then((value) async {
+                  int id=await value.rawUpdate(q);
+                  if(id==1)
+                  {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return viewpage();
+                    },));
+                  }
+                });
               }
-            });
+            else
+              {
+                String q="insert into notes values (null,'$title','$notes','$currenttheme')";
+                dbclass().createdb().then((value) async {
+                  int id=await value.rawInsert(q);
+                  if(id>=1)
+                  {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return viewpage();
+                    },));
+                  }
+                });
+              }
           }, icon: Icon(Icons.save)),
         ],
       ),
@@ -187,7 +206,7 @@ class _add_notesState extends State<add_notes> {
                 DropdownMenuItem(child: Text("16",style: TextStyle(fontSize: 16)),value: 16,),
                 DropdownMenuItem(child: Text("18",style: TextStyle(fontSize: 18)),value: 18,),
                 DropdownMenuItem(child: Text("24",style: TextStyle(fontSize: 24)),value: 24,),
-              ],)
+              ],),
             ],
           )
         ]),
