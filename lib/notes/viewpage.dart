@@ -25,6 +25,7 @@ class _viewpageState extends State<viewpage> {
     return list;
   }
   Color tile_color=Colors.white;
+  List colorappbarlist=[Colors.blue,Colors.green,Colors.orange,Colors.red,Colors.lightBlueAccent];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,26 +44,8 @@ class _viewpageState extends State<viewpage> {
               ids.add(element['id']);
             });
             return ListView.builder(itemBuilder: (context, index) {
-              if(themes[index]=='blue')
-                {
-                  tile_color=Colors.blue;
-                }
-              if(themes[index]=='green')
-              {
-                tile_color=Colors.green;
-              }
-              if(themes[index]=='orange')
-              {
-                tile_color=Colors.orange;
-              }
-              if(themes[index]=='red')
-              {
-                tile_color=Colors.red;
-              }
-              if(themes[index]=='lightBlueAccent')
-              {
-                tile_color=Colors.lightBlueAccent;
-              }
+              int theme_no=themes[index];
+              tile_color=colorappbarlist[theme_no];
               return ListTile(
                 tileColor: tile_color,
                 onTap: (){

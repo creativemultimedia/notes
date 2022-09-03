@@ -8,7 +8,7 @@ class add_notes extends StatefulWidget {
   String? title;
   String? notes;
   int? id;
-  String? theme;
+  int? theme;
   add_notes({this.title,this.notes,this.id,this.theme,this.method});
   @override
   State<add_notes> createState() => _add_notesState();
@@ -18,6 +18,7 @@ class _add_notesState extends State<add_notes> {
   TextEditingController t1=TextEditingController();
   TextEditingController t2=TextEditingController();
   int fontval=10;
+  int currenttheme=0;
   List imglist=["blue.png","green.png","orange.png","red.png","skyblue.png"];
   List colorappbarlist=[Colors.blue,Colors.green,Colors.orange,Colors.red,Colors.lightBlueAccent];
   List colorbglist=[Colors.blue.withOpacity(0.5),Colors.green.withOpacity(0.5),Colors.orange.withOpacity(0.5),Colors.red.withOpacity(0.5),Colors.lightBlueAccent.withOpacity(0.5)];
@@ -31,32 +32,8 @@ class _add_notesState extends State<add_notes> {
       {
         t1.text=widget.title!;
         t2.text=widget.notes!;
-        if(widget.theme=='blue')
-        {
-          currentappbarcolor=Colors.blue;
-          currentbodycolor=Colors.blue.withOpacity(0.5);
-        }
-        if(widget.theme=='green')
-        {
-          currentappbarcolor=Colors.green;
-          currentbodycolor=Colors.green.withOpacity(0.5);
-        }
-        if(widget.theme=='orange')
-        {
-          currentappbarcolor=Colors.orange;
-          currentbodycolor=Colors.orange.withOpacity(0.5);
-        }
-        if(widget.theme=='red')
-        {
-          currentappbarcolor=Colors.red;
-          currentbodycolor=Colors.red.withOpacity(0.5);
-        }
-        if(widget.theme=='lightBlueAccent')
-        {
-          currentappbarcolor=Colors.lightBlueAccent;
-          currentbodycolor=Colors.lightBlueAccent.withOpacity(0.5);
-        }
-
+        currentappbarcolor=colorappbarlist[widget.theme!];
+        currentbodycolor=colorbglist[widget.theme!];
       }
   }
 
@@ -72,29 +49,7 @@ class _add_notesState extends State<add_notes> {
           IconButton(onPressed: () async {
             String name=t1.text;
             String contact=t2.text;
-            String theme="";
-            if(currentappbarcolor==Colors.blue)
-              {
-                theme='blue';
-              }
-            if(currentappbarcolor==Colors.green)
-            {
-              theme='green';
-            }
-            if(currentappbarcolor==Colors.orange)
-            {
-              theme='orange';
-            }
-            if(currentappbarcolor==Colors.red)
-            {
-              theme='red';
-            }
-            if(currentappbarcolor==Colors.lightBlueAccent)
-            {
-              theme='lightBlueAccent';
-            }
-            print(theme);
-            String q="insert into notes values (null,'$name','$contact','$theme')";
+            String q="insert into notes values (null,'$name','$contact','$currenttheme')";
             dbclass().createdb().then((value) async {
               int id=await value.rawInsert(q);
               if(id>=1)
@@ -134,6 +89,7 @@ class _add_notesState extends State<add_notes> {
                           return InkWell(
                             onTap: () {
                               setState(() {
+                                currenttheme=index;
                                 currentappbarcolor=colorappbarlist[index];
                                 currentbodycolor=colorbglist[index];
                               });

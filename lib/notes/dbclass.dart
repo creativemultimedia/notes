@@ -16,7 +16,7 @@ class dbclass
         onCreate: (Database db, int version) async {
           // When creating the db, create the table
           await db.execute(
-              'CREATE TABLE notes (id INTEGER PRIMARY KEY, title TEXT, notes TEXT,theme TEXT)');
+              'CREATE TABLE notes (id INTEGER PRIMARY KEY, title TEXT, notes TEXT,theme int)');
         });
     return database!;
   }
